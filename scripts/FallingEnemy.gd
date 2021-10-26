@@ -17,3 +17,9 @@ func _ready():
 func _process(delta):
 	position += velocity*delta
 
+
+
+func _on_FallingEnemy_body_entered(body):
+	# Collision with Terrain
+	if body.is_in_group("Terrain"):
+		body.take_damage(damage)
