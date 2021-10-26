@@ -5,7 +5,9 @@
 
 [sub_resource type="CircleShape2D" id=1]
 
-[node name="FallingEnemy" type="KinematicBody2D"]
+[node name="FallingEnemy" type="Area2D" groups=[
+"Enemies",
+]]
 collision_layer = 2
 collision_mask = 5
 script = ExtResource( 1 )
