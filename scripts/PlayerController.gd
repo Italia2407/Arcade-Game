@@ -22,11 +22,29 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func _process(delta):
+	if (Input.is_action_just_pressed("jump")):
+		_velocity.y = _jump_force
+		print("Jump")
 
 func _physics_process(delta):
-	print(is_grounded())
+	# Move Player Based on Velocity
+	var collision = move_and_slide(_velocity)
+	
+	# TODO: 
+	# Fix velocity resetting prematurely 
+	# First frame after jump is still considered grounded
+	
+	print("Before: %f" % _velocity.y)
+	print("Ground: %s" % is_grounded())
+	
+	# Handle Gravity and Falling
+	if (!is_grounded()):
+		_velocity.y += _gravity*delta
+	else:
+		_velocity.y = 0.0
+		
+	print("After: %f" % _velocity.y)
 
 
 func is_grounded():

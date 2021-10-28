@@ -77,3 +77,4 @@ health = 1
 
 [node name="Player" parent="." instance=ExtResource( 3 )]
 position = Vector2( 42, 504 )
+jump_height = 100.0
