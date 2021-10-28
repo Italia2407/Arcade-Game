@@ -8,6 +8,68 @@
 [node name="FallingEnemy" parent="." instance=ExtResource( 1 )]
 position = Vector2( 420, 85 )
 
-[node name="LevelTile" parent="." instance=ExtResource( 2 )]
-position = Vector2( 420, 240 )
+[node name="LevelTiles" type="Node2D" parent="."]
+position = Vector2( 32, 568 )
+
+[node name="LevelTile1" parent="LevelTiles" instance=ExtResource( 2 )]
+health = 1
+
+[node name="LevelTile2" parent="LevelTiles" instance=ExtResource( 2 )]
+position = Vector2( 64, 0 )
+health = 1
+
+[node name="LevelTile3" parent="LevelTiles" instance=ExtResource( 2 )]
+position = Vector2( 128, 0 )
+health = 1
+
+[node name="LevelTile4" parent="LevelTiles" instance=ExtResource( 2 )]
+position = Vector2( 192, 0 )
+health = 1
+
+[node name="LevelTile5" parent="LevelTiles" instance=ExtResource( 2 )]
+position = Vector2( 256, 0 )
+health = 1
+
+[node name="LevelTile6" parent="LevelTiles" instance=ExtResource( 2 )]
+position = Vector2( 320, 0 )
+health = 1
+
+[node name="LevelTile7" parent="LevelTiles" instance=ExtResource( 2 )]
+position = Vector2( 384, 0 )
+health = 1
+
+[node name="LevelTile8" parent="LevelTiles" instance=ExtResource( 2 )]
+position = Vector2( 448, 0 )
+health = 1
+
+[node name="LevelTile9" parent="LevelTiles" instance=ExtResource( 2 )]
+position = Vector2( 512, 0 )
+health = 1
+
+[node name="LevelTile10" parent="LevelTiles" instance=ExtResource( 2 )]
+position = Vector2( 576, 0 )
+health = 1
+
+[node name="LevelTile11" parent="LevelTiles" instance=ExtResource( 2 )]
+position = Vector2( 640, 0 )
+health = 1
+
+[node name="LevelTile12" parent="LevelTiles" instance=ExtResource( 2 )]
+position = Vector2( 704, 0 )
+health = 1
+
+[node name="LevelTile13" parent="LevelTiles" instance=ExtResource( 2 )]
+position = Vector2( 768, 0 )
+health = 1
+
+[node name="LevelTile14" parent="LevelTiles" instance=ExtResource( 2 )]
+position = Vector2( 832, 0 )
+health = 1
+
+[node name="LevelTile15" parent="LevelTiles" instance=ExtResource( 2 )]
+position = Vector2( 896, 0 )
+health = 1
+
+[node name="LevelTile16" parent="LevelTiles" instance=ExtResource( 2 )]
+position = Vector2( 960, 0 )
 health = 1
