@@ -31,23 +31,18 @@ func _physics_process(delta):
 	# Move Player Based on Velocity
 	var collision = move_and_slide(_velocity)
 	
-	# TODO: 
-	# Fix velocity resetting prematurely 
-	# First frame after jump is still considered grounded
-	
-	print("Before: %f" % _velocity.y)
-	print("Ground: %s" % is_grounded())
-	
 	# Handle Gravity and Falling
 	if (!is_grounded()):
 		_velocity.y += _gravity*delta
 	else:
 		_velocity.y = 0.0
-		
-	print("After: %f" % _velocity.y)
 
 
 func is_grounded():
+	RayL.force_raycast_update()
+	RayM.force_raycast_update()
+	RayR.force_raycast_update()
+	
 	var left = RayL.is_colliding()
 	var middle = RayM.is_colliding()
 	var right = RayR.is_colliding()
