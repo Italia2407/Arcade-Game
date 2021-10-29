@@ -6,11 +6,14 @@ export var jump_height = 1.0
 export var jump_distance = 1.0
 
 export var movement_speed = 1.0
+export var acceleration_time = 1.0
+export var deceleration_time = 1.0
 
 var _jump_force: float
 var _gravity: float
 
 var _velocity: Vector2
+var _movement_direction: int
 
 onready var RayL := $GroundedRays/RayCastGroundL
 onready var RayM := $GroundedRays/RayCastGroundM
@@ -22,16 +25,28 @@ func _ready():
 	_gravity = 2*jump_height*pow(movement_speed, 2) / pow(jump_distance, 2)
 	
 	_velocity = Vector2(0.0, 0.0)
+	_movement_direction = 1
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if (Input.is_action_pressed("move_left") && !Input.is_action_pressed("move_right")):
-		_velocity.x = -movement_speed
+		_movement_direction = -1
+		
+		_velocity.x -= (movement_speed / acceleration_time) * delta
+		_velocity.x = clamp(_velocity.x, -movement_speed, movement_speed)
 	elif (Input.is_action_pressed("move_right") && !Input.is_action_pressed("move_left")):
-		_velocity.x = movement_speed
-	else:
-		_velocity.x = 0.0
+		_movement_direction = 1
+		
+		_velocity.x += (movement_speed / acceleration_time) * delta
+		_velocity.x = clamp(_velocity.x, -movement_speed, movement_speed)
+	elif (is_grounded()):
+		_velocity.x += ((-_movement_direction * movement_speed) / deceleration_time) * delta
+		
+		if (_movement_direction == 1 && _velocity.x < 0.0):
+			_velocity.x = 0.0
+		elif (_movement_direction == -1 && _velocity.x > 0.0):
+			_velocity.x = 0.0
 	
 	if (Input.is_action_just_pressed("jump")):
 		_velocity.y = _jump_force

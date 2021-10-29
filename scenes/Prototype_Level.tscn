@@ -80,3 +80,5 @@ position = Vector2( 42, 504 )
 jump_height = 100.0
 jump_distance = 192.0
 movement_speed = 384.0
+acceleration_time = 0.15
+deceleration_time = 0.1
