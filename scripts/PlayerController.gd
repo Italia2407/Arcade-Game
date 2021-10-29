@@ -2,8 +2,11 @@ extends KinematicBody2D
 
 
 # Member Variables
-export var jump_height = 1.5
-export var jump_duration = 1.0
+export var jump_height = 1.0
+export var jump_distance = 1.0
+
+export var movement_speed = 1.0
+
 var _jump_force: float
 var _gravity: float
 
@@ -15,8 +18,8 @@ onready var RayR := $GroundedRays/RayCastGroundR
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	_jump_force = -2*jump_height / jump_duration
-	_gravity = 2*jump_height / pow(jump_duration, 2)
+	_jump_force = -2*jump_height*movement_speed / jump_distance
+	_gravity = 2*jump_height*pow(movement_speed, 2) / pow(jump_distance, 2)
 	
 	_velocity = Vector2(0.0, 0.0)
 
