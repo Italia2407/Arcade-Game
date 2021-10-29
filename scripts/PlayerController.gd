@@ -26,9 +26,15 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	if (Input.is_action_pressed("move_left") && !Input.is_action_pressed("move_right")):
+		_velocity.x = -movement_speed
+	elif (Input.is_action_pressed("move_right") && !Input.is_action_pressed("move_left")):
+		_velocity.x = movement_speed
+	else:
+		_velocity.x = 0.0
+	
 	if (Input.is_action_just_pressed("jump")):
 		_velocity.y = _jump_force
-		print("Jump")
 
 func _physics_process(delta):
 	# Move Player Based on Velocity
