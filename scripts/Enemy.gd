@@ -19,6 +19,8 @@ func _on_FallingEnemy_body_entered(body):
 	# Collision with Terrain
 	if body.is_in_group("Terrain"):
 		body.take_damage(terrain_damage)
+	elif (body.is_in_group("Player")):
+		body.take_damage(player_damage)
 
 
 func take_damage(damage):
