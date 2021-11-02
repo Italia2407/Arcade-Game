@@ -5,15 +5,18 @@ extends KinematicBody2D
 export var jump_height = 1.0
 export var jump_distance = 1.0
 
+var _jump_force: float
+var _gravity: float
+
 export var movement_speed = 1.0
 export var acceleration_time = 1.0
 export var deceleration_time = 1.0
 
-var _jump_force: float
-var _gravity: float
-
 var _velocity: Vector2
-var _movement_direction: int
+
+export var health = 4
+
+var _can_move: bool
 
 onready var RayL := $GroundedRays/RayCastGroundL
 onready var RayM := $GroundedRays/RayCastGroundM
@@ -25,31 +28,30 @@ func _ready():
 	_gravity = 2*jump_height*pow(movement_speed, 2) / pow(jump_distance, 2)
 	
 	_velocity = Vector2(0.0, 0.0)
-	_movement_direction = 1
+	
+	_can_move = true
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if (Input.is_action_pressed("move_left") && !Input.is_action_pressed("move_right")):
-		_movement_direction = -1
-		
+	if (Input.is_action_pressed("move_left") && !Input.is_action_pressed("move_right") && _can_move):
 		_velocity.x -= (movement_speed / acceleration_time) * delta
 		_velocity.x = clamp(_velocity.x, -movement_speed, movement_speed)
-	elif (Input.is_action_pressed("move_right") && !Input.is_action_pressed("move_left")):
-		_movement_direction = 1
-		
+	elif (Input.is_action_pressed("move_right") && !Input.is_action_pressed("move_left") && _can_move):
 		_velocity.x += (movement_speed / acceleration_time) * delta
 		_velocity.x = clamp(_velocity.x, -movement_speed, movement_speed)
 	elif (is_grounded()):
-		_velocity.x += ((-_movement_direction * movement_speed) / deceleration_time) * delta
+		var movement_direction: int = sign(_velocity.x)
+		_velocity.x += ((-movement_direction * movement_speed) / deceleration_time) * delta
 		
-		if (_movement_direction == 1 && _velocity.x < 0.0):
+		if (movement_direction == 1 && _velocity.x < 0.0):
 			_velocity.x = 0.0
-		elif (_movement_direction == -1 && _velocity.x > 0.0):
+		elif (movement_direction == -1 && _velocity.x > 0.0):
 			_velocity.x = 0.0
 	
 	if (Input.is_action_just_pressed("jump")):
 		_velocity.y = _jump_force
+
 
 func _physics_process(delta):
 	# Move Player Based on Velocity
@@ -72,3 +74,18 @@ func is_grounded():
 	var right = RayR.is_colliding()
 	
 	return left || middle || right
+
+
+func take_damage(damage):
+	health -= damage
+	
+	if (health <= 0):
+		health = 0
+		die()
+
+
+func die():
+	$CollisionBox.disabled = true
+	_can_move = false
+	
+	queue_free()
