@@ -9,8 +9,9 @@ var _jump_force: float
 var _gravity: float
 
 export var movement_speed = 1.0
-export var acceleration_time = 1.0
-export var deceleration_time = 1.0
+export var accel_time = 1.0
+export var ground_decel_time = 1.0
+export var air_decel_time = 1.0
 
 var _velocity: Vector2
 
@@ -35,14 +36,15 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if (Input.is_action_pressed("move_left") && !Input.is_action_pressed("move_right") && _can_move):
-		_velocity.x -= (movement_speed / acceleration_time) * delta
+		_velocity.x -= (movement_speed / accel_time) * delta
 		_velocity.x = clamp(_velocity.x, -movement_speed, movement_speed)
 	elif (Input.is_action_pressed("move_right") && !Input.is_action_pressed("move_left") && _can_move):
-		_velocity.x += (movement_speed / acceleration_time) * delta
+		_velocity.x += (movement_speed / accel_time) * delta
 		_velocity.x = clamp(_velocity.x, -movement_speed, movement_speed)
-	elif (is_grounded()):
+	else:
+		var decel_time = (ground_decel_time if is_grounded() else air_decel_time)
 		var movement_direction: int = sign(_velocity.x)
-		_velocity.x += ((-movement_direction * movement_speed) / deceleration_time) * delta
+		_velocity.x += ((-movement_direction * movement_speed) / decel_time) * delta
 		
 		if (movement_direction == 1 && _velocity.x < 0.0):
 			_velocity.x = 0.0
