@@ -68,6 +68,8 @@ public class PlayerController : MonoBehaviour
         {
             velocity.x += _horizontalInput * _acceleration * Time.deltaTime;
             velocity.x = Mathf.Clamp(velocity.x, -runSpeed, runSpeed);
+
+            _horizontalInput = 0.0f;
         }
         else
         {
@@ -84,10 +86,14 @@ public class PlayerController : MonoBehaviour
                 velocity.x = 0.0f;
         }
 
+        Debug.Log("Fixed: " + _jumpInput);
         // Jumping
         if (_jumpInput && grounded)
         {
+            Debug.Log("Has Jumped");
             velocity.y = _jumpForce;
+
+            _jumpInput = false;
         }
 
         _rigidbody.velocity = velocity;
@@ -101,6 +107,7 @@ public class PlayerController : MonoBehaviour
             {
                 _horizontalInput = Input.GetAxisRaw("Horizontal");
                 _jumpInput = Input.GetButtonDown("Jump");
+                Debug.Log("Update: " + _jumpInput);
             }
             else
             {
