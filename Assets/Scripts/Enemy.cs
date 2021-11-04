@@ -27,18 +27,28 @@ public class Enemy : MonoBehaviour
     {
         GameObject collidedObject = collision.gameObject;
 
-        if (collidedObject.tag == "Terrain")
+        if (collidedObject.tag == "Projectile")
         {
-            collidedObject.GetComponent<HealthManager>().TakeDamage(terrainDamage);
+            collidedObject.GetComponent<Projectile>().DamageEnemy(_healthManager);
         }
-        else if (collision.gameObject.tag == "Player")
-        {
-            collidedObject.GetComponent<HealthManager>().TakeDamage(playerDamage);
-        }
+    }
+
+    public void DamageTile(HealthManager tileHealth)
+    {
+        tileHealth.TakeDamage(terrainDamage);
+        OnDeath();
+    }
+
+    public void DamagePlayer(HealthManager playerHealth)
+    {
+        playerHealth.TakeDamage(playerDamage);
+        OnDeath();
     }
 
     private void OnDeath()
     {
+        _healthManager.Die.RemoveAllListeners();
+
         Destroy(gameObject);
     }
 }

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Terrain
   - Enemies
+  - BreakableTile
   layers:
   - Default
   - TransparentFX
@@ -17,7 +18,7 @@ TagManager:
   - Enemy
   - Projectile
   - Pickup
-  - 
+  - BreakableTile
   - 
   - 
   - 

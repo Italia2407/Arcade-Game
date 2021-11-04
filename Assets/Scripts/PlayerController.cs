@@ -117,43 +117,15 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    //private void OnCollisionEnter2D(Collision2D collision)
-    //{
-    //    GameObject collidedObject = collision.gameObject;
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        GameObject collidedObject = collision.gameObject;
 
-    //    if (collidedObject.tag == "Terrain")
-    //    {
-    //        List<ContactPoint2D> contactPoints = new List<ContactPoint2D>();
-    //        collision.GetContacts(contactPoints);
-    //        foreach (ContactPoint2D contactPoint in contactPoints)
-    //        {
-    //            Vector2 contactNormal = contactPoint.normal;
-    //            Vector2 contactPosition = contactPoint.point;
-
-    //            if (contactNormal == Vector2.up)
-    //            {
-    //                _velocity.y = 0.0f;
-    //                transform.position = new Vector2(transform.position.x, contactPosition.y + _collider.bounds.extents.y);
-    //                Debug.Log("Pos: " + contactPosition.y + ", Shift: " + _collider.bounds.extents.y);
-    //            }
-    //            else if (contactNormal == Vector2.down)
-    //            {
-    //                _velocity.y = 0.0f;
-    //                transform.position = new Vector2(transform.position.x, contactPosition.y - _collider.bounds.extents.y);
-    //            }
-    //            else if (contactNormal == Vector2.right)
-    //            {
-    //                _velocity.y = 0.0f;
-    //                transform.position = new Vector2(contactPosition.x + _collider.bounds.extents.x, transform.position.y);
-    //            }
-    //            else if (contactNormal == Vector2.down)
-    //            {
-    //                _velocity.y = 0.0f;
-    //                transform.position = new Vector2(contactPosition.x - _collider.bounds.extents.x, transform.position.y);
-    //            }
-    //        }
-    //    }
-    //}
+        if (collidedObject.tag == "Enemies")
+        {
+            collidedObject.GetComponent<Enemy>().DamagePlayer(_healthManager);
+        }
+    }
 
     public bool IsGrounded()
     {

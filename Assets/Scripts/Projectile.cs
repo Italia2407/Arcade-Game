@@ -36,20 +36,16 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    public void DamageTile(HealthManager tileHealth)
     {
-        GameObject collidedObject = collision.gameObject;
+        tileHealth.TakeDamage(terrainDamage);
+        Explode();
+    }
 
-        if (collidedObject.tag == "Terrain")
-        {
-            collidedObject.GetComponent<HealthManager>().TakeDamage(terrainDamage);
-            Explode();
-        }
-        else if (collidedObject.tag == "Enemies")
-        {
-            collidedObject.GetComponent<HealthManager>().TakeDamage(enemyDamage);
-            Explode();
-        }
+    public void DamageEnemy(HealthManager enemyHealth)
+    {
+        enemyHealth.TakeDamage(enemyDamage);
+        Explode();
     }
 
     private void Explode()
