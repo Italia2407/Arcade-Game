@@ -33,6 +33,16 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    GameObject collidedObject = collision.gameObject;
+
+    //    if (collidedObject.tag == "Projectile")
+    //    {
+    //        collidedObject.GetComponent<Projectile>().DamageEnemy(_healthManager);
+    //    }
+    //}
+
     public void DamageTile(HealthManager tileHealth)
     {
         tileHealth.TakeDamage(terrainDamage);

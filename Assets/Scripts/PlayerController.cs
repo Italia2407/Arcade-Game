@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     public float jumpDistance = 1.0f;
     private float _jumpForce;
     private float _gravityForce;
+    private float _terminalVelocity;
 
     public float runSpeed = 1.0f;
     public float accelerationTime = 1.0f;
@@ -22,6 +23,7 @@ public class PlayerController : MonoBehaviour
     private float _decelerationGround;
     private float _decelerationAir;
 
+    private Vector2 _velocity;
     private bool _canMove;
 
     private float _horizontalInput;
@@ -39,11 +41,13 @@ public class PlayerController : MonoBehaviour
 
         _jumpForce = 4 * jumpHeight * runSpeed / jumpDistance;
         _gravityForce = -8 * jumpHeight * Mathf.Pow(runSpeed, 2) / Mathf.Pow(jumpDistance, 2);
+        _terminalVelocity = -_jumpForce;
 
         _acceleration = runSpeed / accelerationTime;
         _decelerationGround = runSpeed / decelerationTimeGround;
         _decelerationAir = runSpeed / decelerationTimeAir;
 
+        _velocity = Vector2.zero;
         _canMove = true;
 
         _horizontalInput = 0.0f;
@@ -54,36 +58,37 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Vector2 velocity = _rigidbody.velocity;
+        _velocity = _rigidbody.velocity;
         bool grounded = IsGrounded();
 
         // Handle Gravity
         if (!grounded)
         {
-            velocity.y += _gravityForce * Time.fixedDeltaTime;
+            _velocity.y += _gravityForce * Time.fixedDeltaTime;
+
+            if (_velocity.y < _terminalVelocity)
+                _velocity.y = _terminalVelocity;
         }
 
         // Horizontal Movement
         if (_horizontalInput != 0.0f)
         {
-            velocity.x += _horizontalInput * _acceleration * Time.deltaTime;
-            velocity.x = Mathf.Clamp(velocity.x, -runSpeed, runSpeed);
-
-            _horizontalInput = 0.0f;
+            _velocity.x += _horizontalInput * _acceleration * Time.deltaTime;
+            _velocity.x = Mathf.Clamp(_velocity.x, -runSpeed, runSpeed);
         }
         else
         {
-            int movementDirection = (int)Mathf.Sign(velocity.x);
-            if (velocity.x == 0.0f)
+            int movementDirection = (int)Mathf.Sign(_velocity.x);
+            if (_velocity.x == 0.0f)
                 movementDirection = 0;
 
             float deceleration = grounded ? _decelerationGround : _decelerationAir;
-            velocity.x += (-movementDirection * deceleration) * Time.fixedDeltaTime;
+            _velocity.x += (-movementDirection * deceleration) * Time.fixedDeltaTime;
 
-            if (movementDirection == 1 && velocity.x < 0.0f)
-                velocity.x = 0.0f;
-            else if (movementDirection == -1 && velocity.x > 0.0f)
-                velocity.x = 0.0f;
+            if (movementDirection == 1 && _velocity.x < 0.0f)
+                _velocity.x = 0.0f;
+            else if (movementDirection == -1 && _velocity.x > 0.0f)
+                _velocity.x = 0.0f;
         }
 
         Debug.Log("Fixed: " + _jumpInput);
@@ -91,12 +96,12 @@ public class PlayerController : MonoBehaviour
         if (_jumpInput && grounded)
         {
             Debug.Log("Has Jumped");
-            velocity.y = _jumpForce;
+            _velocity.y = _jumpForce;
 
             _jumpInput = false;
         }
 
-        _rigidbody.velocity = velocity;
+        _rigidbody.velocity = _velocity;
     }
 
     private void Update()
@@ -124,6 +129,8 @@ public class PlayerController : MonoBehaviour
         if (collidedObject.tag == "Enemies")
         {
             collidedObject.GetComponent<Enemy>().DamagePlayer(_healthManager);
+
+            _rigidbody.velocity = _velocity;
         }
     }
 

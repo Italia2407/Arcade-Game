@@ -21,14 +21,15 @@ public class Projectile : MonoBehaviour
     {
         _rigidbody = GetComponent<Rigidbody2D>();
         _collider = GetComponent<Collider2D>();
+    }
 
-        _rigidbody.isKinematic = true;
+    private void FixedUpdate()
+    {
+        _rigidbody.velocity = speed * _direction;
     }
 
     private void Update()
     {
-        _rigidbody.velocity = speed * _direction;
-
         _lifeTime += Time.deltaTime;
         if (_lifeTime >= maxLifeTime)
         {
