@@ -23,25 +23,29 @@ public class Enemy : MonoBehaviour
         _healthManager.Die.AddListener(OnDeath);
     }
 
+    private void FixedUpdate()
+    {
+        _velocity = _rigidbody.velocity;
+
+        Debug.Log(transform.position.x);
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         GameObject collidedObject = collision.gameObject;
 
         if (collidedObject.tag == "Projectile")
         {
+            Debug.Log("Shot");
             collidedObject.GetComponent<Projectile>().DamageEnemy(_healthManager);
+
+            _rigidbody.velocity = _velocity;
+        }
+        else if (collidedObject.tag == "Player")
+        {
+            _rigidbody.velocity = _velocity;
         }
     }
-
-    //private void OnTriggerEnter2D(Collider2D collision)
-    //{
-    //    GameObject collidedObject = collision.gameObject;
-
-    //    if (collidedObject.tag == "Projectile")
-    //    {
-    //        collidedObject.GetComponent<Projectile>().DamageEnemy(_healthManager);
-    //    }
-    //}
 
     public void DamageTile(HealthManager tileHealth)
     {

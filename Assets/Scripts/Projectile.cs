@@ -23,6 +23,12 @@ public class Projectile : MonoBehaviour
         _collider = GetComponent<Collider2D>();
     }
 
+    public static void Create(GameObject prefab, Vector2 spawnPosition, Vector2 direction)
+    {
+        Projectile instance = Instantiate(prefab, (Vector3)spawnPosition, Quaternion.Euler(direction.x, direction.y, 0.0f)).GetComponent<Projectile>();
+        instance._direction = direction;
+    }
+
     private void FixedUpdate()
     {
         _rigidbody.velocity = speed * _direction;
