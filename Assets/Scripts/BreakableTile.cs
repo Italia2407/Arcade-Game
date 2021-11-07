@@ -16,6 +16,12 @@ public class BreakableTile : MonoBehaviour
         _healthManager.Die.AddListener(OnBreak);
     }
 
+    public static void Create(GameObject prefab, Vector2 spawnPosition, Sprite sprite, Transform parent)
+    {
+        SpriteRenderer instanceSprite = Instantiate(prefab, (Vector3)spawnPosition, Quaternion.identity, parent).GetComponent<SpriteRenderer>();
+        instanceSprite.sprite = sprite;
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         GameObject collidedObject = collision.gameObject;
@@ -26,7 +32,7 @@ public class BreakableTile : MonoBehaviour
         }
         else if (collidedObject.tag == "Projectile")
         {
-
+            collidedObject.GetComponent<Projectile>().DamageTile(_healthManager);
         }
     }
 
